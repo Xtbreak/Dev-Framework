@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppTemplatesChatRouteImport } from './routes/_app/templates/chat'
 
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
@@ -21,24 +23,45 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppTemplatesChatRoute = AppTemplatesChatRouteImport.update({
+  id: '/templates/chat',
+  path: '/templates/chat',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/templates/chat': typeof AppTemplatesChatRoute
 }
 export interface FileRoutesByTo {
+  '/dashboard': typeof AppDashboardRoute
   '/': typeof AppIndexRoute
+  '/templates/chat': typeof AppTemplatesChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
+  '/_app/dashboard': typeof AppDashboardRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/templates/chat': typeof AppTemplatesChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/dashboard' | '/templates/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_app' | '/_app/'
+  to: '/dashboard' | '/' | '/templates/chat'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/dashboard'
+    | '/_app/'
+    | '/_app/templates/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,15 +84,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/templates/chat': {
+      id: '/_app/templates/chat'
+      path: '/templates/chat'
+      fullPath: '/templates/chat'
+      preLoaderRoute: typeof AppTemplatesChatRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppTemplatesChatRoute: typeof AppTemplatesChatRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
+  AppTemplatesChatRoute: AppTemplatesChatRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
