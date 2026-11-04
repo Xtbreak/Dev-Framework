@@ -125,6 +125,14 @@ explain_options() { # 用产品语言解释分岔
   esac
 }
 
+existing_frontend_context() {
+  [ -f "$P/frontend/package.json" ] || return 0
+  say "检测到现有前端工程：projects/${PRODUCT}/frontend/。"
+  say "先读产品 README.md、docs/项目状态.md、frontend/README.md 和 frontend/package.json，再检查实际页面、布局和路由。"
+  say "后续在现有前端上增量开发，不重新初始化、覆盖或另建同用途工程；不因手册默认技术栈不同而替换现有技术栈。"
+  say "已有前端不代表业务需求、后端、模型或前端验收已通过，仍按当前阶段确认范围与验收。"
+}
+
 # ---------- 本阶段任务文件 ----------
 write_task() { # $1 阶段 $2 模式 chat|window
   local st="$1" mode="$2" n lastfail=""
@@ -144,6 +152,11 @@ write_task() { # $1 阶段 $2 模式 chat|window
     say "1. 读工具包根目录的 AGENTS.md，按第 0 节启动流程处理这个产品（有 docs/项目状态.md 就是老项目，从它记录的地方接着做）。"
     say "2. 本阶段只读这些手册内容：${READ}。读完按 AGENTS.md 第 7 节做一次对账（列出与十条底线冲突的句子，没有就说\"已对账，无冲突\"）。"
     say
+    if [ -f "$P/frontend/package.json" ]; then
+      say "## 已有前端（后续开发基线）"
+      existing_frontend_context
+      say
+    fi
     say "## 本阶段要交的"
     say "${OUT}"
     say "证据包的固定文件见 AGENTS.md 第 5 节。"
@@ -190,6 +203,7 @@ show_status() {
   st="$(sget 阶段)"; status="$(sget 状态)"; stage_info "$st"
   line; say "产品：${PRODUCT}"; say "阶段：${st}　　状态：${status}"
   [ -n "$(sget 工具)" ] && say "编码工具：$(tool_name "$(sget 工具)")"
+  existing_frontend_context
   [ "$st" != "完成" ] && { say "本阶段要交：${OUT}"; say "本阶段你要做：${PM}"; }
   line
 }

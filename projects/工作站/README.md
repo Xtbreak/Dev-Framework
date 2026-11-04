@@ -41,3 +41,14 @@ pnpm exec vitest run src/components/config-drawer.test.tsx --browser.headless
 - `docs/设计参考/`：后续设计材料。
 - `docs/阶段文档/`：后续开发阶段文档。
 - `docs/evidence/`：后续验证证据。
+
+## 后续开发入口
+
+在仓库根目录运行：
+
+```bash
+bash kit.sh 状态 工作站
+bash kit.sh 任务 工作站
+```
+
+管家会明确提示已有 `frontend/`，要求先读项目状态及现有代码，并在此基础上增量开发，不重新搭建。当前阶段0用于确认后续业务需求，不代表现有前端未建立，也不代表其他阶段已经验收通过。
