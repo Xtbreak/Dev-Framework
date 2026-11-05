@@ -196,4 +196,4 @@
 
 ## 📄 许可
 
-[MIT License](./LICENSE) © 2025 hubooooooo
+[MIT License](./LICENSE) © 2025 [Xtbreak](https://github.com/Xtbreak)
